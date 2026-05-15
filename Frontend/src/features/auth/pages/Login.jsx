@@ -1,5 +1,6 @@
 import React from 'react'
 import "../auth.form.scss"
+import { Link } from 'react-router';
 
 export default function Login() {
 
@@ -11,7 +12,7 @@ export default function Login() {
       <div className="form-counter">
            <h1>Login</h1>
 
-           <form className="auth-form">
+           <form className="auth-form" onSubmit={handleSubmit}>
               <div className="input-group">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required />
@@ -22,6 +23,8 @@ export default function Login() {
               </div>
               <button className="button btn-primary" type="submit">Login</button>
            </form>
+
+           <p>Don't have an account? <Link to="/register">Register here</Link></p>
       </div> 
     </main>
   )

@@ -1,6 +1,9 @@
 import React from 'react'
+import { Link, useNavigate } from 'react-router';
 
 export default function Register() {
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e)=>{
     e.preventDefault();
@@ -10,7 +13,7 @@ export default function Register() {
       <div className="form-counter">
            <h1>Register</h1>
 
-           <form className="auth-form">
+           <form className="auth-form" onSubmit={handleSubmit}>
               <div className="input-group">
                 <label htmlFor="Username">Username</label>
                 <input type="text" id="Username" name="Username" placeholder="Enter your username" required />
@@ -25,6 +28,8 @@ export default function Register() {
               </div>
               <button className="button btn-primary" type="submit">Register</button>
            </form>
+
+           <p>Already have an account? <Link to="/login">Login here</Link></p>
       </div> 
     </main>
   )
