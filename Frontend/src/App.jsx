@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import {RouterProvider} from "react-router-dom";
 import {router} from "./routes/app.routes";
+import {AuthProvider} from "./features/auth/auth.context";
 
 function App() {
 
   return (
     <>
-      <RouterProvider router={router}/>
-      <h1>App</h1>
+      <AuthProvider>
+        <RouterProvider router={router}/>
+        <h2>Hello, Developers</h2>
+      </AuthProvider>
     </>
   )
 }
