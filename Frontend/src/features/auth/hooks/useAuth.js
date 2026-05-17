@@ -16,14 +16,18 @@ export const useAuth = ()=>{
 
     const handleLogin = async ({email, password})=>{
         setLoading(true);
-        
         try {
             const data = await loginUser({email, password});
-            setUser(data.user);
-            setLoading(false);
+            if (data?.user) {
+                setUser(data.user);
+                return { ok: true, user: data.user };
+            }
+            return { ok: false, message: data?.message || "Login failed" };
         } catch (error) {
+            console.log(error?.response?.data?.message || error);
+            return { ok: false, message: error?.response?.data?.message || "Login failed" };
+        } finally {
             setLoading(false);
-            console.log(error);
         }
     }
 
@@ -31,27 +35,36 @@ export const useAuth = ()=>{
         setLoading(true);
         try {
             const data = await registerUser({username, email, password});
-            setUser(data.user);
-            setLoading(false);
+            if (data?.user) {
+                setUser(data.user);
+                return { ok: true, user: data.user };
+            }
+            return { ok: false, message: data?.message || "Registration failed" };
         } catch (error) {
+            console.log(error?.response?.data?.message || error);
+            return { ok: false, message: error?.response?.data?.message || "Registration failed" };
+        } finally {
             setLoading(false);
-            console.log(error);
         }
     }
 
     const handleLogOut = async()=>{
         setLoading(true);
         try {
-            const data = await logOutUser();
+            await logOutUser();
             setUser(null);
-            setLoading(false);
+            return { ok: true };
         } catch (error) {
+            console.log(error?.response?.data?.message || error);
+            return { ok: false, message: error?.response?.data?.message || "Logout failed" };
+        } finally {
             setLoading(false);
-            console.log(error);
         }
     }
 
     return {
+        user,
+        loading,
         handleLogin,
         handleRegister,
         handleLogOut
