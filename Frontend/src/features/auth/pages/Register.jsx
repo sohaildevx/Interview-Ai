@@ -19,6 +19,10 @@ export default function Register() {
       navigate("/login");
     }
   }
+
+  if(loading) {
+    return <div className="loader">Loading...</div>
+  }
   return (
     <main>
       <div className="form-counter">
