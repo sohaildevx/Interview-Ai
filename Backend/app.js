@@ -2,6 +2,7 @@ import express from 'express';
 import authRouter from './src/routes/auth.routes.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { interviewRouter } from './src/routes/interview.routes.js';
 
 export const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors({
 }))
 
 app.use('/auth', authRouter);
+app.use('/interview', interviewRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

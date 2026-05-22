@@ -55,5 +55,5 @@ export async function generateInterviewReport({
     }
    })
 
-   console.log(response.text);
+   return JSON.parse(response.text);
 }
