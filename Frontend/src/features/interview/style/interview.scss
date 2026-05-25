@@ -1,0 +1,163 @@
+.interview-page {
+  --ink: #11140f;
+  --paper: #f6f3ea;
+  --slate: #2b2f26;
+  --muted: #7a7f73;
+  --border: rgba(17, 20, 15, 0.15);
+  --accent: #ef7d2d;
+  
+  display: grid;
+  grid-template-columns: 260px 1fr 300px;
+  min-height: 100vh;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  
+ 
+  .sidebar-left {
+    border-right: 1px solid var(--border);
+  }
+  
+  .content-middle {
+   
+  }
+  
+  .sidebar-right {
+    border-left: 1px solid var(--border);
+  }
+
+  
+  .sidebar-left {
+    padding: 3rem 1.5rem;
+    
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 1.5rem;
+    }
+    
+    li {
+      cursor: pointer;
+      font-size: 1.05rem;
+      color: var(--muted);
+      transition: color 0.2s ease, font-weight 0.2s ease;
+      position: relative;
+      
+      &:hover {
+        color: var(--slate);
+      }
+      
+      &.active {
+        color: var(--ink);
+        font-weight: 600;
+        
+        &::after {
+          content: "";
+          position: absolute;
+          left: -1.5rem;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 4px;
+          height: 100%;
+          background-color: var(--accent);
+          border-radius: 0 4px 4px 0;
+        }
+      }
+    }
+  }
+
+  
+  .content-middle {
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    font-size: 1.25rem;
+    color: var(--slate);
+  }
+
+  
+  .sidebar-right {
+    padding: 3rem 2rem;
+    
+    h3 {
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 0;
+      margin-bottom: 1.25rem;
+      color: var(--slate);
+    }
+    
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    
+    .skill-tag {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px; 
+      font-size: 0.95rem;
+      color: var(--slate);
+      background-color: transparent;
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: rgba(17, 20, 15, 0.04);
+      }
+    }
+  }
+}
+
+
+@media (max-width: 980px) {
+  .interview-page {
+    grid-template-columns: 220px 1fr;
+    
+    .sidebar-right {
+      grid-column: 1 / -1;
+      border-left: none;
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .interview-page {
+    grid-template-columns: 1fr;
+    
+    .sidebar-left {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem;
+      
+      nav ul {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 1.5rem;
+        padding-bottom: 0.5rem;
+      }
+      
+      li.active::after {
+        left: 0;
+        top: auto;
+        bottom: -0.5rem;
+        height: 3px;
+        width: 100%;
+        border-radius: 4px 4px 0 0;
+      }
+    }
+    
+    .content-middle {
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+  }
+}
