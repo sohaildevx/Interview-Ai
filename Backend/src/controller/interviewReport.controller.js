@@ -3,9 +3,8 @@ import { generateInterviewReport } from '../services/ai.services.js';
 import { PDFParse } from 'pdf-parse';
 
 export async function generateInterViewReportController(req,res){
-    const resumeFile = req.file;
-    const parser = new PDFParse({ data: resumeFile.buffer });
-    const resumeContent = await parser.getText();
+
+    const resumeContent = await (new PDFParse(Uint8Array.from(req.file.buffer))).getText()
     const {jobDescription, selfDescription} = req.body;
 
     try {
@@ -20,10 +19,10 @@ export async function generateInterViewReportController(req,res){
              jobDescription,
              resume: resumeContent.text,
              selfDescription,
-             ...interviewReportData
+            ...interviewReportData
         })
 
-        res.status(201).json({message: 'Interview report generated successfully', interviewReport: interviewReports});
+        res.status(201).json({message: 'Interview report generated successfully', interviewReports});
 
     } catch (error) {
         console.error('Error generating interview report:', error);

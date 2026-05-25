@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const techinalSkillsSchema = new mongoose.Schema({
+const technicalSkillsSchema = new mongoose.Schema({
     question:{
         type:String,
         required: true
@@ -16,6 +16,18 @@ const techinalSkillsSchema = new mongoose.Schema({
 }, { _id: false });
 
 const behavioralSkillsSchema = new mongoose.Schema({
+    question: {
+        type: String,
+        required: true
+    },
+    intention: {
+        type: String,
+        required: true
+    },
+    answer: {
+        type: String,
+        required: true
+    }
 }, { _id: false });
 
 const skillGapSchema = new mongoose.Schema({
@@ -61,8 +73,8 @@ const interviewReportSchema = new mongoose.Schema({
         min: 0,
         max: 100
     },
-    technicalQuestion:[techinalSkillsSchema],
-    behavioralQuestion:[behavioralSkillsSchema],
+    technicalQuestions: [technicalSkillsSchema],
+    behavioralQuestions: [behavioralSkillsSchema],
     skillGaps:[skillGapSchema],
     preparationTips:[preparationTipsSchema],
     user:{

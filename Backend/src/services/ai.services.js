@@ -2,9 +2,16 @@ import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GOOGLE_API_KEY,
-});
+function getAiClient() {
+    const apiKey = process.env.GOOGLE_API_KEY;
+    if (!apiKey) {
+        throw new Error(
+            "Missing GOOGLE_API_KEY. Set it in your .env to use Gemini with API key auth."
+        );
+    }
+
+    return new GoogleGenAI({ apiKey });
+}
 
 const interviewReportSchema = z.object({
     matchScore: z.number().describe("a numerical score representing the overall match between the candidate's profile and the job requirements, typically on a scale from 0 to 100"),
@@ -46,14 +53,24 @@ export async function generateInterviewReport({
     Self Description: ${selfDescription}
     `
 
-   const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-    config:{
-        responseMimeType: "application/json",
-        responseJsonSchema: zodToJsonSchema(interviewReportSchema)
+    const client = getAiClient();
+    let lastError;
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            const response = await client.models.generateContent({
+                model: "gemini-2.5-flash",
+                contents: prompt,
+                config: {
+                    responseMimeType: "application/json",
+                    responseSchema: zodToJsonSchema(interviewReportSchema)
+                }
+            });
+            return JSON.parse(response.text);
+        } catch (err) {
+            lastError = err;
+            if (err.status !== 503) break;
+            await new Promise(r => setTimeout(r, (attempt + 1) * 2000));
+        }
     }
-   })
-
-   return JSON.parse(response.text);
+    throw lastError;
 }
