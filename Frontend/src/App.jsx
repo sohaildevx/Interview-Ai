@@ -9,7 +9,6 @@ function App() {
     <>
       <AuthProvider>
         <RouterProvider router={router}/>
-        <h2>Hello, Developers</h2>
       </AuthProvider>
     </>
   )
