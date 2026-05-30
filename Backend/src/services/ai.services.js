@@ -36,7 +36,8 @@ const interviewReportSchema = z.object({
         day: z.number().describe("the specific day in the preparation timeline for which the tip is relevant"),
         focus: z.string().describe("the specific area of focus for that day, such as technical skills, behavioral skills, or overall interview strategy"),
         tasks: z.string().describe("the specific tasks or activities the candidate should undertake on that day to prepare effectively for the interview")
-    })).describe("a list of preparation tips for the candidate, organized by day, with a focus area and specific tasks to complete each day leading up to the interview")
+    })).describe("a list of preparation tips for the candidate, organized by day, with a focus area and specific tasks to complete each day leading up to the interview"),
+    title: z.string().describe("a concise title summarizing the overall assessment of the candidate's fit for the job based on the interview analysis")
 })
 
 
