@@ -1,10 +1,15 @@
 import {InterviewReport} from '../models/interviewReport.model.js'
 import { generateInterviewReport } from '../services/ai.services.js';
-import { PDFParse } from 'pdf-parse';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const pdfParse = require('pdf-parse');
 
 export async function generateInterViewReportController(req,res){
-
-    const resumeContent = await (new PDFParse(Uint8Array.from(req.file.buffer))).getText()
+    if (!req.file) {
+        return res.status(400).json({ error: 'Resume file is required' });
+    }
+    const resumeContent = await pdfParse(req.file.buffer);
     const {jobDescription, selfDescription} = req.body;
 
     try {
@@ -14,12 +19,14 @@ export async function generateInterViewReportController(req,res){
             selfDescription
         })
 
+        const fallbackTitle = interviewReportData?.title || 'Interview Report';
         const interviewReports = await InterviewReport.create({
              user: req.user.id,
              jobDescription,
              resume: resumeContent.text,
              selfDescription,
-            ...interviewReportData
+            ...interviewReportData,
+            title: fallbackTitle
         })
 
         res.status(201).json({message: 'Interview report generated successfully', interviewReports});
@@ -32,12 +39,12 @@ export async function generateInterViewReportController(req,res){
 
 export async function getInterviewReportController(req,res){
      try {
-        const {interviewReportId} = req.params;
-        if(!interviewReportId){ 
+        const {interviewId} = req.params;
+        if(!interviewId){ 
             return res.status(400).json({ error: 'Interview report ID is required' });
         }
 
-        const interviewReport = await InterviewReport.findById(interviewReportId);
+        const interviewReport = await InterviewReport.findById(interviewId);
 
         res.status(200).json({interviewReport});
      } catch (error) {
