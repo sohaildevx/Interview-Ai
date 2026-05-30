@@ -3,7 +3,7 @@ import axios from "axios";
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 const instance = axios.create({
-    baseURL: `${apiBaseUrl}/auth`,
+    baseURL: apiBaseUrl,
     withCredentials: true,
 });
 
@@ -23,7 +23,7 @@ export const generateInterviewReport = async ({jobDescription, resumefile, selfD
 }
 
 export const getInterviewReportById  = async (interviewId)=>{
-    const response = await instance.get(`/interview/${interviewId}`);
+    const response = await instance.get(`/interview/report/${interviewId}`);
     return response;
 }
 
