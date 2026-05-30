@@ -29,3 +29,30 @@ export async function generateInterViewReportController(req,res){
         res.status(500).json({ error: 'Failed to generate interview report' });
     }
 }
+
+export async function getInterviewReportController(req,res){
+     try {
+        const {interviewReportId} = req.params;
+        if(!interviewReportId){ 
+            return res.status(400).json({ error: 'Interview report ID is required' });
+        }
+
+        const interviewReport = await InterviewReport.findById(interviewReportId);
+
+        res.status(200).json({interviewReport});
+     } catch (error) {
+        console.error('Error fetching interview report:', error);
+        res.status(500).json({ error: 'Failed to fetch interview report' });
+     }
+}
+
+export async function getAllInterviewReportsController(req,res){
+     try {
+        const interviewReports = await InterviewReport.find({user: req.user.id}).select('-resume -selfDescription -jobDescription -_v -technicalQuestions -behavioralQuestions -skillGaps -preparationTips');
+
+        res.status(200).json({interviewReports});
+     } catch (error) {
+        console.error('Error fetching interview reports:', error);
+        res.status(500).json({ error: 'Failed to fetch interview reports' });
+     }
+}
